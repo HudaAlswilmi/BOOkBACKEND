@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-mongoose.connect("mongodb://localhost:27017/yourDBName").then(
+mongoose.connect("mongodb://localhost:27017/BOOKLIBRARI").then(
   () => {
     console.log("DB connected");
   },
