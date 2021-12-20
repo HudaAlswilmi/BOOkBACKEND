@@ -4,8 +4,10 @@ const bcrypt = require("bcrypt");
 //بي كريبت علشان اشفر الباس وورد 
 
 
+
 const addSignUp = async (req,res)=>{
   let {name ,email, pass}  =req.body 
+  //اوبجكت ستركتشر 
   console.log({name ,email, pass});
   //فنكشن جديد يسوي تسجيل ياخذ الاسم و الايميل و الباسوورد من البودي 
   try {
@@ -13,6 +15,7 @@ const addSignUp = async (req,res)=>{
     const NewUser = new UsrModel (
       {name ,email, pass}
     )
+    // الكي ثابت من السكيما و الفاليو اللي انا عرفته ب البودي 
     //الباسوورد ياخذ وقت وبعدين ب استخدام بي كريبت و الهاش
      // يعمل له تشفير وثم ينشئ يوزر جديد في اليوزر موديل 
     const resssult= await NewUser.save();
@@ -21,6 +24,8 @@ const addSignUp = async (req,res)=>{
     //النتيجه تاخذ وقت وبعدين تحفظ اليوزر 
   } catch (error) {
     res.send(error)
+    //    res.status(400).json(error); 
+
   }
 }
 
