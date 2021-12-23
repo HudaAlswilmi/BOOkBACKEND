@@ -13,7 +13,7 @@ const AddlogIn = async (req, res) => {
 
   try {
     const user = await UsrModel.findOne({ email: email });
-    if (user) {
+    if (user != null) {
       const check = await bcrypt.compare(pass, user.pass);
       //من اليوزر موديل ابحث  عن الايميل واشيك على الايميل المدخل نفس اللي موجود ولا
       //اذا كان موجود اشيك ع الباسوورد المشفر والي ادخله اليوزر

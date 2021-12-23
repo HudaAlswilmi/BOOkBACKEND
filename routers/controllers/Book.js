@@ -40,22 +40,37 @@ const postBook = async (req, res) => {
     const Book = await BookModel.find({});
     // اسوي متغيرين الاول لحفظ البيانات
     // الثاني علشان ابحث واشيك تنه اتخزن بالبوك موديل
-    res.status(200).json(Book);
+    res.status(201).json(saveBook);
     console.log(" Done ");
   } catch (error) {
     res.send(error);
   }
 };
 
+// const deleteBook = async (req, res) => {
+//   const id = req.params.id;
+//   console.log(id,"ddddddeeeeee");
+
+//   try {
+//     const delet = await BookModel.findOneAndDelete({ _id: id });
+//     console.log(delet, "deeeeeeeeeeel");
+//    res.status(200).json(delet);
+//   } catch (err) {
+//     res.send(err);
+//   }
+// };
+
 const deleteBook = async (req, res) => {
   const id = req.params.id;
-  console.log(id);
   try {
-    const delet = await BookModel.findOneAndDelete({ _id: id });
-    console.log(delet, "deeeeeeeeeeel");
+    const del = await BookModel.findOneAndDelete({ _id: id});
+    if (del) {
+      res.send("deleted");
+    } else {
+      res.send("cant deleted");
+    }
   } catch (err) {
     res.send(err);
   }
 };
-
 module.exports = { getBooks, postBook, getBook, deleteBook };
