@@ -24,7 +24,7 @@ const getBook = async (req, res) => {
   }
 };
 
-const postBook = async (req, res) => {
+const poostBook = async (req, res) => {
   const { name, img, descripion, url } = req.body;
   //اجيب البيانات من البودي
   const newBook = new BookModel({
@@ -46,31 +46,49 @@ const postBook = async (req, res) => {
     res.send(error);
   }
 };
+ 
 
-// const deleteBook = async (req, res) => {
-//   const id = req.params.id;
-//   console.log(id,"ddddddeeeeee");
-
-//   try {
-//     const delet = await BookModel.findOneAndDelete({ _id: id });
-//     console.log(delet, "deeeeeeeeeeel");
-//    res.status(200).json(delet);
-//   } catch (err) {
-//     res.send(err);
-//   }
-// };
 
 const deleteBook = async (req, res) => {
   const id = req.params.id;
+  console.log(id,"ddddddeeeeee");
+
   try {
-    const del = await BookModel.findOneAndDelete({ _id: id});
-    if (del) {
-      res.send("deleted");
-    } else {
-      res.send("cant deleted");
-    }
+    const delet = await BookModel.findOneAndDelete({ _id: id });
+    console.log(delet, "deeeeeeeeeeel");
+    res.status(200).json(delet);
   } catch (err) {
     res.send(err);
   }
 };
-module.exports = { getBooks, postBook, getBook, deleteBook };
+
+const getLike = async (req, res) => {
+  const user = req.token.userId;
+
+  try {
+    const likeBook = await UsrModel
+      .findOne({ _id: user }).populate("like");
+
+    res.status(200).json(likeBook);
+  } catch (error) {
+    res.send(error);
+  }
+};
+
+const AddLike = async (req, res) => {
+  const id = req.params.id;
+  const user = req.token.userId;
+  try {
+    const newLike = await UsrModel.findOneAndUpdate(
+      { _id: id },
+      { $push: { like: id } },
+      { new: true }
+    );
+    res.status(201).json(newLike);
+  } catch (error) {
+    res.send(error);
+  }
+};
+
+
+module.exports = { getBooks, poostBook, getBook, deleteBook ,AddLike,getLike};
