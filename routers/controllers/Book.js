@@ -1,4 +1,5 @@
 const BookModel = require("../../db/models/BookModel");
+const UsrModel =require("../../db/models/UsrModel")
 //سكيما الكتب علشان اجيب البيانات
 
 const getBooks = async (req, res) => {
@@ -63,28 +64,33 @@ const deleteBook = async (req, res) => {
 };
 
 const getLike = async (req, res) => {
-  const user = req.token.userId;
+  const userId = req.token.userId;
 
   try {
     const likeBook = await UsrModel
-      .findOne({ _id: user }).populate("like");
-
-    res.status(200).json(likeBook);
+      .findOne({ _id: userId }).populate("like");
+    res.status(200).json(likeBook.like);
+    console.log("Done like ");
   } catch (error) {
     res.send(error);
   }
 };
 
 const AddLike = async (req, res) => {
+  console.log("mmmmmm");
+  console.log(req.token,req.params,"mmmmmm");
+
   const id = req.params.id;
-  const user = req.token.userId;
+  const userId = req.token.userId;
   try {
     const newLike = await UsrModel.findOneAndUpdate(
-      { _id: id },
+      { _id: userId },
       { $push: { like: id } },
       { new: true }
     );
+
     res.status(201).json(newLike);
+    console.log(newLike,"lllike");
   } catch (error) {
     res.send(error);
   }
