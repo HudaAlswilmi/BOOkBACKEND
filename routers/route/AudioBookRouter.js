@@ -1,13 +1,15 @@
 const express = require("express");
-const AudioBookModel = express.Router();
+const AudioBookRouter = express.Router();
 
-const { getBoooks ,postBooks } = require("../controllers/Booking");
+const { getBoooks ,postBooks ,getAudioBook} = require("../controllers/Booking");
 const { authentication } = require("../middlewares/authentication"); 
 
 
-AudioBookModel.get("/AudioBook", authentication,getBoooks)
+AudioBookRouter.get("/AudioBook", authentication,getBoooks)
+AudioBookRouter.get("/AudioBook/:id", authentication, getAudioBook)
 
-AudioBookModel.post("/AudioBooking", authentication,postBooks)
+
+AudioBookRouter.post("/AudioBooking", authentication,postBooks)
 
 
-module.exports = AudioBookModel;
+module.exports = AudioBookRouter;

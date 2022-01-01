@@ -36,4 +36,15 @@ const postBooks = async (req, res) => {
     }
   };
 
-  module.exports = { getBoooks, postBooks };
+  const getAudioBook = async (req, res) => {
+    const id = req.params.id;
+    try {
+      const AudioBook = await AudioBookModel.findOne({ _id: id });
+      //ب اليوزر موديل يبحث عن عنصر واحد ب استخدام الاي دي
+      res.status(200).json(AudioBook);
+    } catch (error) {
+      res.send(error);
+    }
+  };
+
+  module.exports = { getBoooks, postBooks ,getAudioBook };

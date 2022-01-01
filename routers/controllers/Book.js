@@ -1,5 +1,7 @@
+const req = require("express/lib/request");
+const res = require("express/lib/response");
 const BookModel = require("../../db/models/BookModel");
-const UsrModel =require("../../db/models/UsrModel")
+const UsrModel = require("../../db/models/UsrModel");
 //سكيما الكتب علشان اجيب البيانات
 
 const getBooks = async (req, res) => {
@@ -18,7 +20,7 @@ const getBook = async (req, res) => {
   const id = req.params.id;
   try {
     const Book = await BookModel.findOne({ _id: id });
-    //ب اليوزر موديل يبحث عن عنصر واحد ب استخدام الاي دي 
+    //ب اليوزر موديل يبحث عن عنصر واحد ب استخدام الاي دي
     res.status(200).json(Book);
   } catch (error) {
     res.send(error);
@@ -47,12 +49,10 @@ const poostBook = async (req, res) => {
     res.send(error);
   }
 };
- 
-
 
 const deleteBook = async (req, res) => {
   const id = req.params.id;
-  console.log(id,"ddddddeeeeee");
+  console.log(id, "ddddddeeeeee");
 
   try {
     const delet = await BookModel.findOneAndDelete({ _id: id });
@@ -63,12 +63,27 @@ const deleteBook = async (req, res) => {
   }
 };
 
+const updettBook = async (req, res) => {
+  const id = req.params.id;
+  const {  name, img, descripion, url} =
+    req.body;
+  try {
+    const Book = await BookModel.findOneAndUpdate(
+      { _id: id },
+      {  name, img, descripion, url},
+      { new: true }
+    );
+    res.status(201).json(Book);
+  } catch (error) {
+    res.send({error});
+  }
+};
+
 const getLike = async (req, res) => {
   const userId = req.token.userId;
 
   try {
-    const likeBook = await UsrModel
-      .findOne({ _id: userId }).populate("like");
+    const likeBook = await UsrModel.findOne({ _id: userId }).populate("like");
     res.status(200).json(likeBook.like);
     console.log("Done like ");
   } catch (error) {
@@ -78,7 +93,7 @@ const getLike = async (req, res) => {
 
 const AddLike = async (req, res) => {
   console.log("mmmmmm");
-  console.log(req.token,req.params,"mmmmmm");
+  console.log(req.token, req.params, "mmmmmm");
 
   const id = req.params.id;
   const userId = req.token.userId;
@@ -90,11 +105,38 @@ const AddLike = async (req, res) => {
     );
 
     res.status(201).json(newLike);
-    console.log(newLike,"lllike");
+    console.log(newLike, "lllike");
   } catch (error) {
     res.send(error);
   }
 };
 
+const removlike = async (req, res) => {
+  const id = req.params.id;
+  const userId = req.token.userId;
+  console.log(id);
+  console.log(userId);
+  try {
+    const unLike = await UsrModel.findOneAndUpdate(
+      { _id: userId },
+      { $pull: { like: id } },
+      { new: true }
+    );
+    console.log(unLike, "dellllll");
+    res.status(200).json(unLike);
+    console.log("dellllll");
+  } catch (error) {
+    res.send(error);
+  }
+};
 
-module.exports = { getBooks, poostBook, getBook, deleteBook ,AddLike,getLike};
+module.exports = {
+  getBooks,
+  poostBook,
+  getBook,
+  deleteBook,
+  AddLike,
+  getLike,
+  removlike,
+  updettBook,
+};

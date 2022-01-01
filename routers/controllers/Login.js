@@ -15,13 +15,15 @@ const AddlogIn = async (req, res) => {
     const user = await UsrModel.findOne({ email: email });
     if (user != null) {
       const check = await bcrypt.compare(pass, user.pass);
+
       //من اليوزر موديل ابحث  عن الايميل واشيك على الايميل المدخل نفس اللي موجود ولا
       //اذا كان موجود اشيك ع الباسوورد المشفر والي ادخله اليوزر
 
       if (check === true) {
-        const payload = { userId: user._id, userName: user.name };
+        const payload = { userId: user._id, userName: user.name ,isAdmin:user.isAdmin };
         const token = jwt.sign(payload, "huda");
-        res.status(200).json({ token });
+        res.status(200).json({ token ,payload });
+        
         // أذا شيكت وكان موموجود اجيب  اي دي و الاسم من التوكن
       } else {
         res.status(403).json("Wrong PassWord!!! ");
