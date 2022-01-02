@@ -5,6 +5,7 @@ const AudioBookModel = new mongoose.Schema({
   img: { type: String },
   descripion: { type: String },
   url:{ type:String},
+  Commint:{type:Array},
   user: { type: mongoose.Schema.Types.ObjectId, ref: "userModel" },
 });
 

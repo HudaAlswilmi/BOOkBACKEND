@@ -1,4 +1,5 @@
 const AudioBookModel = require("../../db/models/AudioBookModel");
+const UsrModel =require("../../db/models/UsrModel")
 //سكيما الكتب علشان اجيب البيانات
 
 const getBoooks = async (req, res) => {
@@ -47,4 +48,22 @@ const postBooks = async (req, res) => {
     }
   };
 
-  module.exports = { getBoooks, postBooks ,getAudioBook };
+  const AddCommint = async (req, res) => {
+      const {Commint} = req.body;
+      const id = req.params.id;
+      const user = req.token.userId;
+      const userName=req.token.userName
+      
+      AudioBookModel.findOneAndUpdate({ _id: id }
+      ,{ $push: { Commint: {Commint, userName} } },{new: true})
+        .populate("user").then((result) => {
+          console.log(result,"res")
+          res.send(res);
+        }).catch(err=>{
+          res.send(err)
+        });
+    };
+
+  
+
+  module.exports = { getBoooks, postBooks ,getAudioBook ,AddCommint};

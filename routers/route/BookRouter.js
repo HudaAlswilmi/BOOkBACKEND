@@ -9,7 +9,7 @@ const {
   AddLike,
   getLike,
   removlike,
-  updettBook} = require("../controllers/Book");
+  updettBook } = require("../controllers/Book");
 const { authentication } = require("../middlewares/authentication");
 // const {ADMAIN } = require("../middlewares/admain")
 
@@ -24,6 +24,7 @@ BookRouter.delete("/Favorite/:id", authentication, removlike);
 
 BookRouter.post("/Book", authentication, poostBook);
 BookRouter.post("/Favorite/:id", authentication, AddLike);
+
 
 BookRouter.put("/BoooK/:id", authentication, updettBook)
 module.exports = BookRouter;
