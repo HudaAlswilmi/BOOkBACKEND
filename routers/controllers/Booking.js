@@ -64,6 +64,57 @@ const postBooks = async (req, res) => {
         });
     };
 
-  
+    const getAudioLike = async (req, res) => {
+        const userId = req.token.userId;
+      
+        try {
+          const likeBook = await UsrModel.findOne({ _id: userId }).populate("likeAudio");
+          res.status(200).json(likeBook.likeAudio);
+          console.log("Done like ");
+        } catch (error) {
+          res.send(error);
+        }
+      };
+    
+      const AddAudioLike = async (req, res) => {
+        console.log("mmmmmm");
+        console.log(req.token, req.params, "mmmmmm");
+      
+        const id = req.params.id;
+        const userId = req.token.userId;
+        try {
+          const newLike = await UsrModel.findOneAndUpdate(
+            { _id: userId },
+            { $push: { likeAudio: id } },
+            { new: true }
+          );
+      
+          res.status(201).json(newLike);
+          console.log(newLike, "lllike");
+        } catch (error) {
+          res.send(error);
+        }
+      };
 
-  module.exports = { getBoooks, postBooks ,getAudioBook ,AddCommint};
+
+      const remov = async (req, res) => {
+        const id = req.params.id;
+        const userId = req.token.userId;
+        console.log(id);
+        console.log(userId);
+        try {
+          const unLike = await UsrModel.findOneAndUpdate(
+            { _id: userId },
+            { $pull: { like: id } },
+            { new: true }
+          );
+          console.log(unLike, "dellllll");
+          res.status(200).json(unLike);
+          console.log("dellllll");
+        } catch (error) {
+          res.send(error);
+        }
+      };
+      
+
+  module.exports = { getBoooks, postBooks ,getAudioBook ,AddCommint ,getAudioLike ,AddAudioLike ,remov};
