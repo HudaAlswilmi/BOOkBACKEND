@@ -122,13 +122,18 @@ const removlike = async (req, res) => {
       { $pull: { like: id } },
       { new: true }
     );
+
+    const likeBook = await UsrModel.findOne({ _id: userId }).populate("like");
+    res.status(200).json(likeBook.like);
+
     console.log(unLike, "dellllll");
-    res.status(200).json(unLike);
-    console.log("dellllll");
-  } catch (error) {
+      } catch (error) {
     res.send(error);
   }
 };
+
+
+
 
 
 

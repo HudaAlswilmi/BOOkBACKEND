@@ -49,19 +49,37 @@ const postBooks = async (req, res) => {
   };
 
   const AddCommint = async (req, res) => {
+      try {
+        const {Commint} = req.body;
+      const id = req.params.id;
+      const user = req.token.userId;
+      const userName=req.token.userName
+      console.log(id , user ,userName);
+      const response  = await  AudioBookModel.findOneAndUpdate({ _id: id }
+      ,{ $push: { Commint: {Commint, userName , user} } },{new: true})
+      //الكي اللي اسمه كومنت يكون داخله اسم اليوزر و الكومينت الجديد 
+      res.status(200).json(response.Commint)
+      } catch (error) {
+        res.status(400).json(error)
+      }
+    };
+
+
+    const deleteCommint = async (req, res) => {
+      try {
+
       const {Commint} = req.body;
       const id = req.params.id;
       const user = req.token.userId;
       const userName=req.token.userName
-      
-      AudioBookModel.findOneAndUpdate({ _id: id }
-      ,{ $push: { Commint: {Commint, userName} } },{new: true})
-        .populate("user").then((result) => {
-          console.log(result,"res")
+      console.log(id , user ,userName);
+      const response  = await   AudioBookModel.findOneAndUpdate({ _id: id }
+      ,{ $pull: { Commint: {Commint, userName, user} } },{new: true})
+      //الكي اللي اسمه كومنت يكون داخله اسم اليوزر و الكومينت الجديد 
           res.send(res);
-        }).catch(err=>{
-          res.send(err)
-        });
+        } catch (error) {
+           res.send(err)
+        };
     };
 
     const getAudioLike = async (req, res) => {
@@ -82,6 +100,7 @@ const postBooks = async (req, res) => {
       
         const id = req.params.id;
         const userId = req.token.userId;
+        console.log(id,"kkkkkkk");
         try {
           const newLike = await UsrModel.findOneAndUpdate(
             { _id: userId },
@@ -105,16 +124,16 @@ const postBooks = async (req, res) => {
         try {
           const unLike = await UsrModel.findOneAndUpdate(
             { _id: userId },
-            { $pull: { like: id } },
+            { $pull: { likeAudio: id } },
             { new: true }
           );
-          console.log(unLike, "dellllll");
-          res.status(200).json(unLike);
-          console.log("dellllll");
+          const likeBook = await UsrModel.findOne({ _id: userId }).populate("likeAudio");
+          res.status(200).json(likeBook.likeAudio);
+          console.log(unLike, "dellllll")
         } catch (error) {
           res.send(error);
         }
       };
       
 
-  module.exports = { getBoooks, postBooks ,getAudioBook ,AddCommint ,getAudioLike ,AddAudioLike ,remov};
+  module.exports = { getBoooks, postBooks ,getAudioBook ,AddCommint ,getAudioLike ,AddAudioLike ,remov ,deleteCommint};
