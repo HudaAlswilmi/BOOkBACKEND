@@ -9,7 +9,7 @@ const {
   AddLike,
   getLike,
   removlike,
-  updettBook } = require("../controllers/Book");
+  updettBook ,BookCommint ,deleteBookCommint } = require("../controllers/Book");
 const { authentication } = require("../middlewares/authentication");
 // const {ADMAIN } = require("../middlewares/admain")
 
@@ -21,8 +21,11 @@ BookRouter.get("/Favorite", authentication, getLike);
 
 BookRouter.delete("/BoooK/:id", authentication, deleteBook);
 BookRouter.delete("/Favorite/:id", authentication, removlike);
+BookRouter.put("/BookCommint/:id", authentication, deleteBookCommint);
 
 BookRouter.post("/Book", authentication, poostBook);
+BookRouter.post("/BookCommint/:id", authentication, BookCommint);
+
 BookRouter.post("/Favorite/:id", authentication, AddLike);
 
 

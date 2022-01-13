@@ -63,6 +63,9 @@ const deleteBook = async (req, res) => {
   }
 };
 
+
+
+
 const updettBook = async (req, res) => {
   const id = req.params.id;
   const {  name, img, descripion, url} =
@@ -133,8 +136,48 @@ const removlike = async (req, res) => {
 };
 
 
+const BookCommint = async (req, res) => {
+  try {
+    const { Commint } = req.body;
+    const id = req.params.id;
+    const user = req.token.userId;
+    const userName = req.token.userName;
+    console.log(id, user, userName);
+    const response = await BookModel.findOneAndUpdate(
+      { _id: id },
+      { $push: { Commint: { Commint, userName, user } } },
+      { new: true }
+    );
+    //الكي اللي اسمه كومنت يكون داخله اسم اليوزر و الكومينت الجديد
+    res.status(200).json(response.Commint);
+  } catch (error) {
+    res.status(400).json(error);
+  }
+};
 
 
+
+
+const deleteBookCommint = async (req, res) => {
+  try {
+    const { Commint } = req.body;
+    
+    const id = req.params.id;
+    const user = req.token.userId;
+    const userName = req.token.userName;
+    console.log(id, user, userName);
+    const response = await BookModel.findOneAndUpdate(
+      { _id: id },
+      { $pull: { Commint: { Commint, userName, user } } },
+      { new: true }
+    );
+    //الكي اللي اسمه كومنت يكون داخله اسم اليوزر و الكومينت الجديد
+  
+    res.send(response.Commint);
+  } catch (err) {
+    res.send(err);
+  }
+};
 
 
 module.exports = {
@@ -146,4 +189,6 @@ module.exports = {
   getLike,
   removlike,
   updettBook,
+  BookCommint,
+  deleteBookCommint
 };
