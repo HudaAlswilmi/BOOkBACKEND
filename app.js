@@ -1,9 +1,11 @@
 require('dotenv').config()
 const express = require("express");
 const app = express();
+const cors = require("cors");
+
+require('dotenv').config()
 require("./db/db.js");
 app.use(express.json());
-const cors = require("cors");
 app.use(cors());
 
 const BookRouter = require("./routers/route/BookRouter");
@@ -16,7 +18,10 @@ app.use(SinUpRouter);
 app.use(BookRouter);
 app.use(AudioBookRouter);
 
+
+
+console.log(process.env.PORT) 
 const Port = 5000;
-app.listen(Port, () => {
+app.listen(process.env.PORT, () => {
   console.log("server run on 5000 port");
 });

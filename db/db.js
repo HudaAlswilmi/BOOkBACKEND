@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
+console.log(process.env.DB_URL) 
 
-mongoose.connect("mongodb://localhost:27017/BOOKLIBRARI").then(
+
+mongoose.connect(process.env.DB_URL).then(
   () => {
     console.log("DB connected");
   },
@@ -8,3 +10,4 @@ mongoose.connect("mongodb://localhost:27017/BOOKLIBRARI").then(
     console.log(err);
   }
 );
+

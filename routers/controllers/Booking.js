@@ -20,7 +20,6 @@ const postBooks = async (req, res) => {
   const newBook = new AudioBookModel({
     name,
     img,
-    descripion,
     url,
   });
   console.log(newBook);
